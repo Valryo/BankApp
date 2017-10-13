@@ -1,13 +1,11 @@
 package butterfly.blue.bankapp.sqlite.model;
 
-import java.util.Date;
-
 /**
  * Created by Valryo on 13/10/2017.
  */
 
 public class BankAccount {
-    int id;
+    long id;
     int CreatedAt;
     int ModifiedAt;
     String Name;
@@ -17,16 +15,13 @@ public class BankAccount {
 
     }
 
-    public BankAccount(int id, int creation, int modification, String name, String bankName) {
-        this.id = id;
-        this.CreatedAt = creation;
-        this.ModifiedAt = modification;
+    public BankAccount(String name, String bankName) {
         this.Name = name;
         this.BankName = bankName;
     }
 
     // -===- Getters -===-
-    public int getId(){
+    public long getId(){
         return this.id;
     }
 
@@ -47,7 +42,7 @@ public class BankAccount {
     }
 
     // -===- Setters -===-
-    public void setId(int id){
+    public void setId(long id){
         this.id = id;
     }
 
@@ -65,5 +60,9 @@ public class BankAccount {
 
     public void setBankName(String bankName) {
         this.BankName = bankName;
+    }
+
+    public String toString(){
+        return this.BankName + " - " + this.Name;
     }
 }

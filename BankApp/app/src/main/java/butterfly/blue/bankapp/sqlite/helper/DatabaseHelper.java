@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Table names
     private static final String TABLE_BANK_ACCOUNT = "Bank_Account";
-    private static final String TABLE_TRANSACTION = "Transaction";
+    private static final String TABLE_TRANSACTION = "MyTransaction";
 
     // Common column names
     private static final String KEY_ID = "id";
@@ -53,8 +53,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + KEY_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP, " + KEY_MODIFIED_AT
             + " DATETIME DEFAULT CURRENT_TIMESTAMP, " + KEY_AMOUNT + " INTEGER, "
             + KEY_TRANSACTION_DATE + " DATETIME, " + KEY_IS_INCOME + " BOOLEAN, "
+            + KEY_BANK_ACCOUNT_ID + " INTEGER, "
             + "FOREIGN KEY (" + KEY_BANK_ACCOUNT_ID + ") REFERENCES " + TABLE_BANK_ACCOUNT + "("
-            + KEY_ID + ")";
+            + KEY_ID + "))";
 
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -85,6 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_BANK_NAME, bankAccount.getBankName());
 
         long id = db.insert(TABLE_BANK_ACCOUNT, null, values);
+        bankAccount.setId(id);
 
         return id;
     }
@@ -152,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_BANK_NAME, bankAccount.getBankName());
         values.put(KEY_MODIFIED_AT, System.currentTimeMillis() / 1000L);
 
-        return db.update(TABLE_BANK_ACCOUNT, values, KEY_ID + " = " + bankAccount.getId(), null);
+        return db.update(TABLE_BANK_ACCOUNT, values, KEY_ID + " = ?",  new String[] {String.valueOf(bankAccount.getId())});
     }
 
     /*
@@ -256,5 +258,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteTransaction(long transactionId){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TRANSACTION, KEY_ID + " = ?", new String[] {String.valueOf(transactionId)});
+    }
+
+    // closing database
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
     }
 }

@@ -3,6 +3,7 @@ package butterfly.blue.bankapp;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
+import butterfly.blue.bankapp.sqlite.helper.DatabaseHelper;
+import butterfly.blue.bankapp.sqlite.model.BankAccount;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "MainActivity";
+
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +50,36 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        db = new DatabaseHelper(getApplicationContext());
+
+        db.onUpgrade(db.getWritableDatabase(), 1, 2);
+        BankAccount ba1 = new BankAccount("Cheque", "Desjardins");
+        BankAccount ba2 = new BankAccount("Livret jeune", "banque pop");
+
+        long ba1_id = db.createBankAccount(ba1);
+        long ba2_id = db.createBankAccount(ba2);
+
+        List<BankAccount> accounts = db.getAllBankAccount();
+        Log.d(TAG, "Count : " + accounts.size());
+
+        for (int i = 0; i < accounts.size(); i++) {
+            Log.d(TAG, accounts.get(i).toString() + " - ID : " + accounts.get(i).getId());
+        }
+
+        ba1.setName("Compte Chèques");
+        ba1.setBankName("Desjardins Chicout'");
+        db.updateBankAccount(ba1);
+
+        Log.d(TAG, "Account 0: " + db.getBankAccount(ba1_id).toString());
+        Log.d(TAG, "Account 1: " + db.getBankAccount(ba2_id).toString());
+
+        db.deleteBankAccount(ba2_id);
+
+        Log.d(TAG, "Count : " + db.getAllBankAccount().size());
+
+        db.closeDB();
     }
 
     @Override
