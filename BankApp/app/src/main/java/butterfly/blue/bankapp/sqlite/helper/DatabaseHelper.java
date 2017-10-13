@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterfly.blue.bankapp.sqlite.model.BankAccount;
+import butterfly.blue.bankapp.sqlite.model.Transaction;
 
 /**
  * Created by Star Dust on 13/10/2017.
@@ -160,5 +161,100 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteBankAccount(long bankAccountId){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_BANK_ACCOUNT, KEY_ID + " = ?", new String[] {String.valueOf(bankAccountId)});
+    }
+
+    /*
+    * Creating a transaction
+     */
+    public long createTransaction(Transaction transaction){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_AMOUNT, transaction.getAmount());
+        values.put(KEY_TRANSACTION_DATE, transaction.getTransactionDate());
+        values.put(KEY_IS_INCOME, transaction.isIncome());
+        values.put(KEY_BANK_ACCOUNT_ID, transaction.getAccountId());
+
+        return db.insert(TABLE_TRANSACTION, null, values);
+    }
+
+    /*
+    * Get a single transaction with id
+     */
+    public Transaction getTransaction(long id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_ID + " = " + id;
+
+        Log.e(TAG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if(c != null)
+            c.moveToFirst();
+
+        Transaction transaction = new Transaction();
+        transaction.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        transaction.setCreatedAt(c.getInt(c.getColumnIndex(KEY_CREATED_AT)));
+        transaction.setModifiedAt(c.getInt(c.getColumnIndex(KEY_MODIFIED_AT)));
+        transaction.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
+        transaction.setTransactionDate(c.getInt(c.getColumnIndex(KEY_TRANSACTION_DATE)));
+        transaction.setIncome(c.getInt(c.getColumnIndex(KEY_IS_INCOME)) > 0);
+        transaction.setAccountId(c.getInt(c.getColumnIndex(KEY_BANK_ACCOUNT_ID)));
+
+        return transaction;
+    }
+
+    /*
+    * Get all transactions
+     */
+    public List<Transaction> getAllTransaction(){
+        List<Transaction> transactions = new ArrayList<Transaction>();
+        String selectQuery = "SELECT * FROM " + TABLE_TRANSACTION;
+
+        Log.e(TAG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if(c.moveToFirst()) {
+            do {
+                Transaction transaction = new Transaction();
+                transaction.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+                transaction.setCreatedAt(c.getInt(c.getColumnIndex(KEY_CREATED_AT)));
+                transaction.setModifiedAt(c.getInt(c.getColumnIndex(KEY_MODIFIED_AT)));
+                transaction.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
+                transaction.setTransactionDate(c.getInt(c.getColumnIndex(KEY_TRANSACTION_DATE)));
+                transaction.setIncome(c.getInt(c.getColumnIndex(KEY_IS_INCOME)) > 0);
+                transaction.setAccountId(c.getInt(c.getColumnIndex(KEY_BANK_ACCOUNT_ID)));
+
+                transactions.add(transaction);
+            } while(c.moveToNext());
+        }
+        return transactions;
+    }
+
+    /*
+    * Updating a bank account
+     */
+    public int updateTransaction(Transaction transaction){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_AMOUNT, transaction.getAmount());
+        values.put(KEY_TRANSACTION_DATE, transaction.getTransactionDate());
+        values.put(KEY_IS_INCOME, transaction.isIncome());
+        values.put(KEY_BANK_ACCOUNT_ID, transaction.getAccountId());
+        values.put(KEY_MODIFIED_AT, System.currentTimeMillis() / 1000L);
+
+        return db.update(TABLE_TRANSACTION, values, KEY_ID + " = " + transaction.getId(), null);
+    }
+
+    /*
+    * Deleting a bank account
+     */
+    public void deleteTransaction(long transactionId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TRANSACTION, KEY_ID + " = ?", new String[] {String.valueOf(transactionId)});
     }
 }
