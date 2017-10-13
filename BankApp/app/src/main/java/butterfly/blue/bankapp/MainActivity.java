@@ -18,6 +18,9 @@ import java.util.List;
 
 import butterfly.blue.bankapp.sqlite.helper.DatabaseHelper;
 import butterfly.blue.bankapp.sqlite.model.BankAccount;
+import butterfly.blue.bankapp.sqlite.model.Transaction;
+
+import static java.lang.Math.toIntExact;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,12 +75,38 @@ public class MainActivity extends AppCompatActivity
         ba1.setBankName("Desjardins Chicout'");
         db.updateBankAccount(ba1);
 
-        Log.d(TAG, "Account 0: " + db.getBankAccount(ba1_id).toString());
-        Log.d(TAG, "Account 1: " + db.getBankAccount(ba2_id).toString());
+        Log.d(TAG, db.getBankAccount(ba1_id).toString());
+        Log.d(TAG, db.getBankAccount(ba2_id).toString());
 
         db.deleteBankAccount(ba2_id);
 
         Log.d(TAG, "Count : " + db.getAllBankAccount().size());
+
+        Transaction t1 = new Transaction(50, System.currentTimeMillis() /1000L, true, ba1_id);
+        Transaction t2 = new Transaction(150, System.currentTimeMillis() /1000L, false, ba1_id);
+        Transaction t3 = new Transaction(250, System.currentTimeMillis() /1000L, true, ba2_id);
+        Transaction t4 = new Transaction(50, System.currentTimeMillis() /1000L, false, ba2_id);
+
+        db.createTransaction(t1);
+        db.createTransaction(t2);
+        db.createTransaction(t3);
+        db.createTransaction(t4);
+
+        List<Transaction> transactions = db.getAllTransaction();
+        Log.d(TAG, "Transactions : " + transactions.size());
+
+        for(int i = 0; i < transactions.size(); i++){
+            Log.d(TAG, transactions.get(i).toString());
+        }
+
+        t1.setAmount(755);
+        t1.setTransactionDate(System.currentTimeMillis() /1000L);
+        db.updateTransaction(t1);
+        Log.d(TAG, db.getTransaction(t1.getId()).toString());
+
+        db.deleteTransaction(t2.getId());
+
+        Log.d(TAG, "Transaction count: " + db.getAllTransaction().size());
 
         db.closeDB();
     }

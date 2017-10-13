@@ -1,24 +1,25 @@
 package butterfly.blue.bankapp.sqlite.model;
 
+import java.util.Date;
+
 /**
  * Created by Valryo on 13/10/2017.
  */
 
 public class Transaction {
     long id;
-    int CreatedAt;
-    int ModifiedAt;
+    long CreatedAt;
+    long ModifiedAt;
     int Amount;
-    int TransactionDate;
+    long TransactionDate;
     boolean IsIncome;
-    int AccountId;
+    long AccountId;
 
     public Transaction(){
 
     }
 
-    public Transaction(int amount, int transactionDate, boolean isIncome, int accountId) {
-
+    public Transaction(int amount, long transactionDate, boolean isIncome, long accountId) {
         this.Amount = amount;
         this.TransactionDate = transactionDate;
         this.IsIncome = isIncome;
@@ -33,19 +34,19 @@ public class Transaction {
         this.id = id;
     }
 
-    public int getCreatedAt() {
+    public long getCreatedAt() {
         return CreatedAt;
     }
 
-    public void setCreatedAt(int createdAt) {
+    public void setCreatedAt(long createdAt) {
         CreatedAt = createdAt;
     }
 
-    public int getModifiedAt() {
+    public long getModifiedAt() {
         return ModifiedAt;
     }
 
-    public void setModifiedAt(int modifiedAt) {
+    public void setModifiedAt(long modifiedAt) {
         ModifiedAt = modifiedAt;
     }
 
@@ -57,11 +58,11 @@ public class Transaction {
         Amount = amount;
     }
 
-    public int getTransactionDate() {
+    public long getTransactionDate() {
         return TransactionDate;
     }
 
-    public void setTransactionDate(int transactionDate) {
+    public void setTransactionDate(long transactionDate) {
         TransactionDate = transactionDate;
     }
 
@@ -73,11 +74,16 @@ public class Transaction {
         IsIncome = income;
     }
 
-    public int getAccountId() {
+    public long getAccountId() {
         return AccountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(long accountId) {
         AccountId = accountId;
+    }
+
+    @Override
+    public String toString(){
+        return id + " | AccountID: " + AccountId + " - Amount: " + (this.IsIncome ? "+" : "-") + Amount + " - " + new Date(TransactionDate*1000L);
     }
 }

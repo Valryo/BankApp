@@ -6,8 +6,8 @@ package butterfly.blue.bankapp.sqlite.model;
 
 public class BankAccount {
     long id;
-    int CreatedAt;
-    int ModifiedAt;
+    long CreatedAt;
+    long ModifiedAt;
     String Name;
     String BankName;
 
@@ -25,11 +25,11 @@ public class BankAccount {
         return this.id;
     }
 
-    public int getCreatedAt(){
+    public long getCreatedAt(){
         return this.CreatedAt;
     }
 
-    public int getModifiedAt(){
+    public long getModifiedAt(){
         return this.ModifiedAt;
     }
 
@@ -46,11 +46,11 @@ public class BankAccount {
         this.id = id;
     }
 
-    public void setCreatedAt(int creation){
+    public void setCreatedAt(long creation){
         this.CreatedAt = creation;
     }
 
-    public void setModifiedAt(int modifiedAt){
+    public void setModifiedAt(long modifiedAt){
         this.ModifiedAt = modifiedAt;
     }
 

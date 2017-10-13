@@ -108,8 +108,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         BankAccount ba = new BankAccount();
         ba.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-        ba.setCreatedAt(c.getInt(c.getColumnIndex(KEY_CREATED_AT)));
-        ba.setModifiedAt(c.getInt(c.getColumnIndex(KEY_MODIFIED_AT)));
         ba.setName(c.getString(c.getColumnIndex(KEY_NAME)));
         ba.setBankName(c.getString(c.getColumnIndex(KEY_BANK_NAME)));
 
@@ -132,8 +130,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 BankAccount ba = new BankAccount();
                 ba.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-                ba.setCreatedAt(c.getInt(c.getColumnIndex(KEY_CREATED_AT)));
-                ba.setModifiedAt(c.getInt(c.getColumnIndex(KEY_MODIFIED_AT)));
                 ba.setName(c.getString(c.getColumnIndex(KEY_NAME)));
                 ba.setBankName(c.getString(c.getColumnIndex(KEY_BANK_NAME)));
 
@@ -177,7 +173,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_IS_INCOME, transaction.isIncome());
         values.put(KEY_BANK_ACCOUNT_ID, transaction.getAccountId());
 
-        return db.insert(TABLE_TRANSACTION, null, values);
+        long id = db.insert(TABLE_TRANSACTION, null, values);
+        transaction.setId(id);
+
+        return id;
     }
 
     /*
@@ -197,8 +196,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Transaction transaction = new Transaction();
         transaction.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-        transaction.setCreatedAt(c.getInt(c.getColumnIndex(KEY_CREATED_AT)));
-        transaction.setModifiedAt(c.getInt(c.getColumnIndex(KEY_MODIFIED_AT)));
         transaction.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
         transaction.setTransactionDate(c.getInt(c.getColumnIndex(KEY_TRANSACTION_DATE)));
         transaction.setIncome(c.getInt(c.getColumnIndex(KEY_IS_INCOME)) > 0);
@@ -223,8 +220,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 Transaction transaction = new Transaction();
                 transaction.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-                transaction.setCreatedAt(c.getInt(c.getColumnIndex(KEY_CREATED_AT)));
-                transaction.setModifiedAt(c.getInt(c.getColumnIndex(KEY_MODIFIED_AT)));
                 transaction.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
                 transaction.setTransactionDate(c.getInt(c.getColumnIndex(KEY_TRANSACTION_DATE)));
                 transaction.setIncome(c.getInt(c.getColumnIndex(KEY_IS_INCOME)) > 0);
