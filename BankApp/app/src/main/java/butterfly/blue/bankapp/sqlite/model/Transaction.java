@@ -15,6 +15,20 @@ public class Transaction {
     boolean IsIncome;
     int AccountId;
 
+    public Transaction(){
+
+    }
+
+    public Transaction(int id, int createdAt, int modifiedAt, int amount, int transactionDate, boolean isIncome, int accountId) {
+        this.id = id;
+        this.CreatedAt = createdAt;
+        this.ModifiedAt = modifiedAt;
+        this.Amount = amount;
+        this.TransactionDate = transactionDate;
+        this.IsIncome = isIncome;
+        this.AccountId = accountId;
+    }
+
     public int getId() {
         return id;
     }
