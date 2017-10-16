@@ -98,13 +98,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + TABLE_BANK_ACCOUNT + " WHERE " + KEY_ID + " = " + id;
-
-        Log.e(TAG, selectQuery);
+        Log.d(TAG, selectQuery);
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        if(c != null)
-            c.moveToFirst();
+        if(c == null || !c.moveToFirst())
+            return null;
 
         BankAccount ba = new BankAccount();
         ba.setId(c.getInt(c.getColumnIndex(KEY_ID)));
@@ -120,8 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<BankAccount> getAllBankAccount() {
         List<BankAccount> accounts = new ArrayList<BankAccount>();
         String selectQuery = "SELECT * FROM " + TABLE_BANK_ACCOUNT;
-
-        Log.e(TAG, selectQuery);
+        Log.d(TAG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -186,8 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + TABLE_TRANSACTION + " WHERE " + KEY_ID + " = " + id;
-
-        Log.e(TAG, selectQuery);
+        Log.d(TAG, selectQuery);
 
         Cursor c = db.rawQuery(selectQuery, null);
 
@@ -210,8 +207,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Transaction> getAllTransaction(){
         List<Transaction> transactions = new ArrayList<Transaction>();
         String selectQuery = "SELECT * FROM " + TABLE_TRANSACTION;
-
-        Log.e(TAG, selectQuery);
+        Log.d(TAG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
