@@ -5,7 +5,7 @@ package butterfly.blue.bankapp.sqlite.model;
  */
 
 public class BankAccount {
-    private long id;
+    private long id = -1;
     private long CreatedAt;
     private long ModifiedAt;
     private String Name;
