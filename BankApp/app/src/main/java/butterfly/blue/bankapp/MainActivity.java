@@ -53,62 +53,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        db = new DatabaseHelper(getApplicationContext());
-
-        db.onUpgrade(db.getWritableDatabase(), 1, 2);
-        BankAccount ba1 = new BankAccount("Cheque", "Desjardins");
-        BankAccount ba2 = new BankAccount("Livret jeune", "banque pop");
-
-        long ba1_id = db.createBankAccount(ba1);
-        long ba2_id = db.createBankAccount(ba2);
-
-        List<BankAccount> accounts = db.getAllBankAccount();
-        Log.d(TAG, "Count : " + accounts.size());
-
-        for (int i = 0; i < accounts.size(); i++) {
-            Log.d(TAG, accounts.get(i).toString() + " - ID : " + accounts.get(i).getId());
-        }
-
-        ba1.setName("Compte Chèques");
-        ba1.setBankName("Desjardins Chicout'");
-        db.updateBankAccount(ba1);
-
-        Log.d(TAG, db.getBankAccount(ba1_id).toString());
-        Log.d(TAG, db.getBankAccount(ba2_id).toString());
-
-        db.deleteBankAccount(ba2_id);
-
-        Log.d(TAG, "Count : " + db.getAllBankAccount().size());
-
-        Transaction t1 = new Transaction(50, System.currentTimeMillis() /1000L, true, ba1_id);
-        Transaction t2 = new Transaction(150, System.currentTimeMillis() /1000L, false, ba1_id);
-        Transaction t3 = new Transaction(250, System.currentTimeMillis() /1000L, true, ba2_id);
-        Transaction t4 = new Transaction(50, System.currentTimeMillis() /1000L, false, ba2_id);
-
-        db.createTransaction(t1);
-        db.createTransaction(t2);
-        db.createTransaction(t3);
-        db.createTransaction(t4);
-
-        List<Transaction> transactions = db.getAllTransaction();
-        Log.d(TAG, "Transactions : " + transactions.size());
-
-        for(int i = 0; i < transactions.size(); i++){
-            Log.d(TAG, transactions.get(i).toString());
-        }
-
-        t1.setAmount(755);
-        t1.setTransactionDate(System.currentTimeMillis() /1000L);
-        db.updateTransaction(t1);
-        Log.d(TAG, db.getTransaction(t1.getId()).toString());
-
-        db.deleteTransaction(t2.getId());
-
-        Log.d(TAG, "Transaction count: " + db.getAllTransaction().size());
-
-        db.closeDB();
     }
 
     @Override
