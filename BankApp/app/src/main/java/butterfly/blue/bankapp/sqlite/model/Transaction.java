@@ -7,13 +7,13 @@ import java.util.Date;
  */
 
 public class Transaction {
-    long id;
-    long CreatedAt;
-    long ModifiedAt;
-    int Amount;
-    long TransactionDate;
-    boolean IsIncome;
-    long AccountId;
+    private long id;
+    private long CreatedAt;
+    private long ModifiedAt;
+    private int Amount;
+    private long TransactionDate;
+    private boolean IsIncome;
+    private long AccountId;
 
     public Transaction(){
 
