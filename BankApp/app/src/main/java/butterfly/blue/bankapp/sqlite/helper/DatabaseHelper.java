@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Bank Account table - Column names
     private static final String KEY_NAME = "Name";
     private static final String KEY_BANK_NAME = "BankName";
+    private static final String KEY_BANK_AMOUNT = "Amount";
 
     // Transaction table - Column names
     private static final String KEY_BANK_ACCOUNT_ID = "BankAccountId";
@@ -46,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_BANK_ACCOUNT + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + KEY_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP, " + KEY_MODIFIED_AT
             + " DATETIME DEFAULT CURRENT_TIMESTAMP, " + KEY_NAME + " TEXT NOT NULL, "
-            + KEY_BANK_NAME + " TEXT NOT NULL)";
+            + KEY_BANK_NAME + " TEXT NOT NULL, " + KEY_BANK_AMOUNT + " FLOAT)";
 
     private static final String CREATE_TABLE_TRANSACTION =
             "CREATE TABLE " + TABLE_TRANSACTION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -84,6 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, bankAccount.getName());
         values.put(KEY_BANK_NAME, bankAccount.getBankName());
+        values.put(KEY_BANK_AMOUNT, bankAccount.getAmount());
 
         long id = db.insert(TABLE_BANK_ACCOUNT, null, values);
         bankAccount.setId(id);
@@ -109,6 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ba.setId(c.getInt(c.getColumnIndex(KEY_ID)));
         ba.setName(c.getString(c.getColumnIndex(KEY_NAME)));
         ba.setBankName(c.getString(c.getColumnIndex(KEY_BANK_NAME)));
+        ba.setAmount(c.getFloat(c.getColumnIndex(KEY_BANK_AMOUNT)));
 
         return ba;
     }
@@ -130,6 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ba.setId(c.getInt(c.getColumnIndex(KEY_ID)));
                 ba.setName(c.getString(c.getColumnIndex(KEY_NAME)));
                 ba.setBankName(c.getString(c.getColumnIndex(KEY_BANK_NAME)));
+                ba.setAmount(c.getFloat(c.getColumnIndex(KEY_BANK_AMOUNT)));
 
                 accounts.add(ba);
             } while(c.moveToNext());
@@ -146,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, bankAccount.getName());
         values.put(KEY_BANK_NAME, bankAccount.getBankName());
+        values.put(KEY_BANK_AMOUNT, bankAccount.getAmount());
         values.put(KEY_MODIFIED_AT, System.currentTimeMillis() / 1000L);
 
         return db.update(TABLE_BANK_ACCOUNT, values, KEY_ID + " = ?",  new String[] {String.valueOf(bankAccount.getId())});
@@ -193,7 +198,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Transaction transaction = new Transaction();
         transaction.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-        transaction.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
+        transaction.setAmount(c.getFloat(c.getColumnIndex(KEY_AMOUNT)));
         transaction.setTransactionDate(c.getInt(c.getColumnIndex(KEY_TRANSACTION_DATE)));
         transaction.setIncome(c.getInt(c.getColumnIndex(KEY_IS_INCOME)) > 0);
         transaction.setAccountId(c.getInt(c.getColumnIndex(KEY_BANK_ACCOUNT_ID)));
@@ -216,7 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 Transaction transaction = new Transaction();
                 transaction.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-                transaction.setAmount(c.getInt(c.getColumnIndex(KEY_AMOUNT)));
+                transaction.setAmount(c.getFloat(c.getColumnIndex(KEY_AMOUNT)));
                 transaction.setTransactionDate(c.getInt(c.getColumnIndex(KEY_TRANSACTION_DATE)));
                 transaction.setIncome(c.getInt(c.getColumnIndex(KEY_IS_INCOME)) > 0);
                 transaction.setAccountId(c.getInt(c.getColumnIndex(KEY_BANK_ACCOUNT_ID)));

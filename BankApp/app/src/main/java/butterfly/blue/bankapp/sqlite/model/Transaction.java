@@ -10,7 +10,7 @@ public class Transaction {
     private long id;
     private long CreatedAt;
     private long ModifiedAt;
-    private int Amount;
+    private float Amount;
     private long TransactionDate;
     private boolean IsIncome;
     private long AccountId;
@@ -19,7 +19,7 @@ public class Transaction {
 
     }
 
-    public Transaction(int amount, long transactionDate, boolean isIncome, long accountId) {
+    public Transaction(float amount, long transactionDate, boolean isIncome, long accountId) {
         this.Amount = amount;
         this.TransactionDate = transactionDate;
         this.IsIncome = isIncome;
@@ -50,11 +50,11 @@ public class Transaction {
         ModifiedAt = modifiedAt;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return Amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         Amount = amount;
     }
 

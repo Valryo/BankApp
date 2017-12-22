@@ -10,6 +10,7 @@ public class BankAccount {
     private long ModifiedAt;
     private String Name;
     private String BankName;
+    private float Amount;
 
     public BankAccount(){
 
@@ -18,6 +19,7 @@ public class BankAccount {
     public BankAccount(String name, String bankName) {
         this.Name = name;
         this.BankName = bankName;
+        this.Amount = 0f;
     }
 
     // -===- Getters -===-
@@ -39,6 +41,10 @@ public class BankAccount {
 
     public String getBankName(){
         return this.BankName;
+    }
+
+    public float getAmount() {
+        return Amount;
     }
 
     // -===- Setters -===-
@@ -63,6 +69,10 @@ public class BankAccount {
     }
 
     public String toString(){
-        return this.BankName + " - " + this.Name;
+        return this.BankName + " - " + this.Name + " : " + this.Amount;
+    }
+
+    public void setAmount(float amount) {
+        Amount = amount;
     }
 }

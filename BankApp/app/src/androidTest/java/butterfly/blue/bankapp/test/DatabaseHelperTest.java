@@ -26,8 +26,8 @@ public class DatabaseHelperTest {
 
     @Before
     public void setUp() throws Exception {
-            db = new DatabaseHelper(appContext);
-            db.onUpgrade(db.getWritableDatabase(), 1, 2);
+        db = new DatabaseHelper(appContext);
+        db.onUpgrade(db.getWritableDatabase(), 1, 2);
     }
 
     @After
