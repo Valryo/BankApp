@@ -13,21 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.List;
+import android.widget.TextView;
 
 import butterfly.blue.bankapp.sqlite.helper.DatabaseHelper;
 import butterfly.blue.bankapp.sqlite.model.BankAccount;
 import butterfly.blue.bankapp.sqlite.model.Transaction;
 
-import static java.lang.Math.toIntExact;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
-
-    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +48,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        db.onUpgrade(db.getWritableDatabase(), 1, 2);
+        long id = db.createBankAccount(new BankAccount("Cheque", "Desjardins"));
+        db.createTransaction(new Transaction(50, System.currentTimeMillis() /1000L, true, id));
+        Log.d(TAG, "onCreate: " + db.getAllBankAccount().size());
+        BankAccount ba = db.getBankAccount(id);
+
+        TextView textView = (TextView) findViewById(R.id.AccountName);
+        textView.setText(ba.toString());
+
+        TextView textView1 = (TextView) findViewById(R.id.Amount);
+        textView1.setText(Float.toString(ba.getAmount()));
+
+        db.closeDB();
     }
 
     @Override
